@@ -78,3 +78,15 @@ class IssueUpdate(View):
                 'form' : form,
                 'issue' : issue
             })
+
+class IssueDelete(View):
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        issue = get_object_or_404(Issue, pk=pk)
+        return render(request, 'delete.html',context={'issue':issue})
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        issue = get_object_or_404(Issue, pk=pk)
+        issue.delete()
+        return redirect('index')

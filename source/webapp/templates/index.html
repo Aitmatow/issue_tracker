@@ -15,7 +15,7 @@
                     <p class="card-text">Тип:{{ issue.tip }}</p>
                     <a href="{% url 'issue_view' issue.pk %}" class="btn btn-info">Открыть</a>
                     <a href="{% url 'issue_update' issue.pk %}" class="btn btn-info">Редактировать</a>
-{#                    <a href="{% url 'product_delete' product.pk %}" class="btn btn-info">Удалить</a>#}
+                    <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-info">Удалить</a>
                   </div>
                 </div>
             {% endfor %}
