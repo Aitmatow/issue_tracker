@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block menu %}
+{#   <li><a href="{% url 'article_update' article.pk %}">Edit</a></li>#}
+{#   <li><a href="{% url 'article_delete' article.pk %}">Delete</a></li>#}
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <h1>Наименование задачи: {{ issue.title }}</h1>
+       <p>Статус: {{ issue.status }}</p>
+       <p>Тип: {{ issue.tip }}</p>
+       <p>Дата создания <b>{{ issue.create_date }}</b></p>
+       <div class="pre"> Описание: {% if not issue.description == "" %}{{ issue.description }} {% else %} {{ "Нет описания" }} {% endif %}</div>
+   </div>
+{% endblock %}
