@@ -45,3 +45,36 @@ class IssueCreate(View):
             return render(request, 'create.html', context={
                 'form' : form
             })
+
+
+class IssueUpdate(View):
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        issue = get_object_or_404(Issue, pk=pk)
+        form = IssueForm(data={
+            'title': issue.title,
+            'description':issue.description,
+            'status':issue.status_id,
+            'tip':issue.tip_id
+        })
+        return render(request, 'update.html',context={
+            'form' : form,
+            'issue' : issue
+        })
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        issue = get_object_or_404(Issue, pk=pk)
+        form = IssueForm(data=request.POST)
+        if form.is_valid():
+            issue.title=form.cleaned_data['title']
+            issue.description=form.cleaned_data['description']
+            issue.status=form.cleaned_data['status']
+            issue.tip=form.cleaned_data['tip']
+            issue.save()
+            return redirect('issue_view', pk = issue.pk)
+        else:
+            return render(request, 'update.html', context={
+                'form' : form,
+                'issue' : issue
+            })
