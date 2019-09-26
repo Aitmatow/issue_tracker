@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Issue{% endblock %}
+{% block menu %}
+    <li class="nav-item active">
+            <a class="nav-link" href="{% url 'issue_view' issue.pk %}">Информация<span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}
+{% block content %}
+    <h1 class="text-center">Вы точно хотите удалить задачу "{{ issue }}"?</h1>
+    <form method="POST" action="{% url "issue_delete" issue.pk %}" class="text-center">
+        {% csrf_token %}
+        <p><input type="submit" value="Удалить" class="btn btn-primary"></p>
+        <p><a href="{% url "issue_view" issue.pk %}" class="btn btn-danger">Отмена</a></p>
+    </form>
+{% endblock %}
