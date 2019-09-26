@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block menu %}
+{% endblock %}
+{% block content %}
+    <h1 class="bg-info text-white text-center">Категория: {{ cur_category }}</h1>
+    {% csrf_token %}
+            {% for issue in issues %}
+                <div class="card mb-3 text-center">
+                  <div class="card-header bg-info text-white"> Задача : '{{ issue.title }}'</div>
+                  <div class="card-body">
+                    <p class="card-text">Статус:{{ issue.status }}</p>
+                    <p class="card-text">Тип:{{ issue.tip }}</p>
+{#                    <a href="{% url 'product_view' product.pk %}" class="btn btn-info">Открыть</a>#}
+{#                    <a href="{% url 'product_update' product.pk %}" class="btn btn-info">Редактировать</a>#}
+{#                    <a href="{% url 'product_delete' product.pk %}" class="btn btn-info">Удалить</a>#}
+                  </div>
+                </div>
+            {% endfor %}
+{% endblock %}

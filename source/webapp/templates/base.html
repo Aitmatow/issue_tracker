@@ -7,13 +7,28 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}MySite{% endblock %}</title>
-    <link rel="stylesheet" href="{% sta 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block styles %}{% endblock %}
 </head>
 <body>
-{% block menu %}{% endblock %}
-<div class="container">tic
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light mb-5">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'index' %}">В главное меню <span class="sr-only">(current)</span></a>
+        </li>
+{#        <li class="nav-item active">#}
+{#            <a class="nav-link" href="{% url 'index' %}">Статусы <span class="sr-only">(current)</span></a>#}
+{#        </li>#}
+{#        <li class="nav-item active">#}
+{#            <a class="nav-link" href="{% url 'index' %}">Типы <span class="sr-only">(current)</span></a>#}
+{#        </li>#}
+        {% block menu %}{% endblock %}
+    </ul>
+  </div>
+</nav>
+<div class="container">
     {% block content %}{% endblock %}
 </div>
 {% block scripts %}{% endblock %}
