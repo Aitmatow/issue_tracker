@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
+from django.views import View
 from django.views.generic import TemplateView
 
+from webapp.forms import IssueForm
 from webapp.models import Issue
 
 
@@ -21,3 +23,25 @@ class IssueView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['issue'] = get_object_or_404(Issue, pk=pk)
         return context
+
+class IssueCreate(View):
+    def get(self, request, *args, **kwargs):
+        form = IssueForm()
+        return render(request, 'create.html',context={
+            'form' : form
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = IssueForm(data=request.POST)
+        if form.is_valid():
+            issue = Issue.objects.create(
+                title=form.cleaned_data['title'],
+                description=form.cleaned_data['description'],
+                status=form.cleaned_data['status'],
+                tip=form.cleaned_data['tip']
+            )
+            return redirect('issue_view', pk = issue.pk)
+        else:
+            return render(request, 'create.html', context={
+                'form' : form
+            })
