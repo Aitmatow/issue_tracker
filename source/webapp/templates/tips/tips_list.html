@@ -9,11 +9,13 @@
                   <div class="card-body">
                     <a href="{% url 'tips_view' status.pk %}" class="btn btn-info">Открыть</a>
                     <a href="{% url 'tips_edit' status.pk %}" class="btn btn-info">Редактировать</a>
-                    <a href="{% url 'tips_delete' status.pk %}" class="btn btn-info">Удалить</a>
+                      {% if not status.issues.count %}
+                        <a href="{% url 'tips_delete' status.pk %}" class="btn btn-info">Удалить</a>
+                      {% endif %}
                   </div>
                 </div>
             {% endfor %}
 {% endblock %}
 {% block scripts %}
-<a href="{% url 'add_issue' %}" class="button2" tabindex="0">+</a>
+<a href="{% url 'tips_new' %}" class="button2" tabindex="0">+</a>
 {% endblock %}

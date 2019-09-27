@@ -25,6 +25,7 @@ class Statuses(models.Model):
     def get_absolute_url(self):
         return reverse('statuses_edit', kwargs={'pk': self.pk})
 
+
 class Tips(models.Model):
     name = models.CharField(max_length=20, verbose_name='Тип')
 

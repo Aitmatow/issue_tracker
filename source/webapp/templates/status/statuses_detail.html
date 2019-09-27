@@ -8,7 +8,9 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'statuses_edit' object.pk%} ">Редактирование</a>
+            {% if not object.issues.count %}
             <a class="dropdown-item" href="{% url 'status_delete' object.pk%} ">Удаление</a>
+            {% endif %}
         </div>
       </li>
 {% endblock %}

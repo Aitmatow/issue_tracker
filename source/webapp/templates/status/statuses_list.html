@@ -8,7 +8,9 @@
                   <div class="card-body">
                     <a href="{% url 'status_view' status.pk %}" class="btn btn-info">Открыть</a>
                     <a href="{% url 'statuses_edit' status.pk %}" class="btn btn-info">Редактировать</a>
-                    <a href="{% url 'status_delete' status.pk %}" class="btn btn-info">Удалить</a>
+                    {% if not status.issues.count %}
+                      <a href="{% url 'status_delete' status.pk %}" class="btn btn-info">Удалить</a>
+                      {% endif %}
                   </div>
                 </div>
             {% endfor %}
