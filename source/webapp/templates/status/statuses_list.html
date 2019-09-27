@@ -10,7 +10,10 @@
                     <a href="{% url 'statuses_edit' status.pk %}" class="btn btn-info">Редактировать</a>
                     {% if not status.issues.count %}
                       <a href="{% url 'status_delete' status.pk %}" class="btn btn-info">Удалить</a>
-                      {% endif %}
+                        {% else %}
+                        <a href="{% url 'status_delete' status.pk %}" class="btn btn-info disabled">Удалить</a>
+                    {% endif %}
+
                   </div>
                 </div>
             {% endfor %}
