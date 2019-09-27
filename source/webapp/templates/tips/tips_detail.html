@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.name }}{% endblock %}
+{% block menu %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Действия
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'statuses_edit' object.pk%} ">Редактирование</a>
+            <a class="dropdown-item" href="{% url 'status_delete' object.pk%} ">Удаление</a>
+        </div>
+      </li>
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <h1>Тип: {{ object.name }}</h1>
+   </div>
+{% endblock %}

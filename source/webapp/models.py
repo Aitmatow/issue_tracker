@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Issue(models.Model):
@@ -13,14 +14,22 @@ class Issue(models.Model):
     def __str__(self):
         return self.title
 
+
+
 class Statuses(models.Model):
     name = models.CharField(max_length=20, verbose_name='Статус')
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('statuses_edit', kwargs={'pk': self.pk})
+
 class Tips(models.Model):
     name = models.CharField(max_length=20, verbose_name='Тип')
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('tips_edit', kwargs={'pk':self.pk})

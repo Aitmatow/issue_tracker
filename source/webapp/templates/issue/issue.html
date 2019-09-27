@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}{{ issue.title }}{% endblock %}
-
 {% block menu %}
-{#   <li><a href="{% url 'article_update' article.pk %}">Edit</a></li>#}
-{#   <li><a href="{% url 'article_delete' article.pk %}">Delete</a></li>#}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Действия
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'issue_update' issue.pk%} ">Редактирование</a>
+            <a class="dropdown-item" href="{% url 'issue_delete' issue.pk%} ">Удаление</a>
+        </div>
+      </li>
 {% endblock %}
 {% block content %}
    <div class="container">

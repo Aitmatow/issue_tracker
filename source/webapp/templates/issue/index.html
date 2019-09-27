@@ -1,15 +1,10 @@
 {% extends 'base.html' %}
-{% block menu %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'add_issue' %}">Добавить задачу </a>
-        </li>
-{% endblock %}
 {% block content %}
-    <h1 class="bg-info text-white text-center">Категория: {{ cur_category }}</h1>
+    <h1 class="bg-info text-white text-center">Задачи: </h1>
     {% csrf_token %}
             {% for issue in issues %}
                 <div class="card mb-3 text-center">
-                  <div class="card-header bg-info text-white"> Задача : '{{ issue.title }}'</div>
+                  <div class="card-header bg-info text-white"> '{{ issue.title }}'</div>
                   <div class="card-body">
                     <p class="card-text">Статус:{{ issue.status }}</p>
                     <p class="card-text">Тип:{{ issue.tip }}</p>
@@ -19,4 +14,7 @@
                   </div>
                 </div>
             {% endfor %}
+{% endblock %}
+{% block scripts %}
+<a href="{% url 'add_issue' %}" class="button2" tabindex="0">+</a>
 {% endblock %}

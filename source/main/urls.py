@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
 
-from webapp.views import IndexView, IssueView, IssueCreate, IssueUpdate, IssueDelete
+from webapp.views import IndexView, IssueView, IssueCreate, IssueUpdate, IssueDelete, StatusList, StatusDetail, \
+    StatusCreate, StatusUpdate, StatusDelete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view(), name='index'),
-    path('issue/<int:pk>', IssueView.as_view(), name = 'issue_view'),
-    path('issue/add', IssueCreate.as_view(), name = 'add_issue'),
-    path('issue/update/<int:pk>', IssueUpdate.as_view(), name = 'issue_update'),
-    path('issue/delete/<int:pk>', IssueDelete.as_view(), name = 'issue_delete'),
+    path('', include('webapp.urls.issue_urls')),
+    path('statuses/', include('webapp.urls.status_urls')),
+    path('tips/', include('webapp.urls.tips_urls'))
 ]
