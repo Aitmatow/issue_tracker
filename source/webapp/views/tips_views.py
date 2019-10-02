@@ -1,9 +1,10 @@
+
+# Create your views here.
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import  ListView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from webapp.models import  Tips
-
-
+from webapp.views.base_views import DetailView
 
 class TipsList(ListView):
     template_name = 'tips/tips_list.html'
@@ -16,6 +17,7 @@ class TipsList(ListView):
 class TipsDetail(DetailView):
     template_name = 'tips/tips_detail.html'
     model = Tips
+    context_key = 'object'
 
 class TipsCreate(CreateView):
     template_name = 'tips/tips_form.html'
