@@ -2,6 +2,9 @@
 {% block content %}
     <h1 class="bg-info text-white text-center">Статусы:</h1>
     {% csrf_token %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
             {% for status in object_list %}
                 <div class="card mb-3 text-center">
                   <div class="card-header bg-info text-white"> '{{ status.name }}'</div>

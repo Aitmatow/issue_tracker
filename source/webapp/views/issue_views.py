@@ -11,6 +11,10 @@ class IssueList(ListView):
     template_name = 'issue/issue_list.html'
     model = Issue
 
+    paginate_by = 4
+    paginate_orphans = 1
+    page_kwarg = 'page'
+
 class IssueDetail(DetailView):
     template_name = 'issue/issue_detail.html'
     model = Issue

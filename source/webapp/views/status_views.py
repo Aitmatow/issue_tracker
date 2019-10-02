@@ -1,4 +1,3 @@
-from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy
@@ -10,6 +9,11 @@ from webapp.models import Statuses
 class StatusList(ListView):
     template_name = 'status/statuses_list.html'
     model = Statuses
+
+
+    paginate_by = 5
+    paginate_orphans = 1
+    page_kwarg = 'page'
 
 class StatusDetail(DetailView):
     template_name = 'status/statuses_detail.html'

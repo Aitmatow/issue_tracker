@@ -8,15 +8,18 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'statuses_edit' object.pk%} ">Редактирование</a>
-            {% if not object.issues.count %}
             <a class="dropdown-item" href="{% url 'status_delete' object.pk%} ">Удаление</a>
-            {% endif %}
         </div>
       </li>
 {% endblock %}
 {% block content %}
    <div class="container">
-       <h1>Наименование задачи: {{ object.name }}</h1>
-
-   </div>
+       <div class="card text-center">
+          <div class="card-header">
+            Статус
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ object.name }}</h5>
+          </div>
+        </div>
 {% endblock %}

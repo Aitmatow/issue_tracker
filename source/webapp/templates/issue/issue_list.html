@@ -2,6 +2,9 @@
 {% block content %}
     <h1 class="bg-info text-white text-center">Задачи:</h1>
     {% csrf_token %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
     <div class="card-deck text-center">
             {% for issue in object_list %}
                 <div class="card">
@@ -9,7 +12,6 @@
                       <h5 class="card-title">{{ issue.title }}</h5>
                       <p class="card-text">Статус : {{ issue.status }}</p>
                       <p class="card-text">Тип : {{ issue.tip }}</p>
-
                     </div>
                     <div class="card-footer">
                       <small class="text-muted">
