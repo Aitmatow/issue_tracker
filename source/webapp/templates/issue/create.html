@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-{% block title %} Create issue{% endblock %}
-{% block content %}
-    <h1> Добавить новую задачу </h1>
-    <form method="post" action="{% url 'add_issue' %}">
-        {% include 'partial/issue_form.html' with button_text="Добавить" %}
-    </form>
-{% endblock %}

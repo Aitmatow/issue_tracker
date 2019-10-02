@@ -1,8 +1,0 @@
-{% extends "base.html" %}
-{% block title %}Update issue{% endblock %}
-{% block content %}
-    <h1> Редактирование </h1>
-    <form method="post" action="{% url 'issue_update' issue.pk%}">
-        {% include 'partial/issue_form.html' with button_text="Update" %}
-    </form>
-{% endblock %}

@@ -17,8 +17,6 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
-from webapp.views import IndexView, IssueView, IssueCreate, IssueUpdate, IssueDelete, StatusList, StatusDetail, \
-    StatusCreate, StatusUpdate, StatusDelete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
