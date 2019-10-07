@@ -3,8 +3,10 @@
 from django.urls import reverse_lazy
 from django.views.generic import  ListView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
+
+from webapp.forms import TipsForm
 from webapp.models import  Tips
-from webapp.views.base_views import DetailView
+from .base_views import UpdateView, DetailView, DeleteView
 
 class TipsList(ListView):
     template_name = 'tips/tips_list.html'
@@ -26,12 +28,18 @@ class TipsCreate(CreateView):
     success_url = reverse_lazy('tips_list')
 
 class TipsUpdate(UpdateView):
+    # template_name = 'tips/tips_form.html'
+    # model = Tips
+    # fields = ['name']
+    # success_url = reverse_lazy('tips_list')
+
+    form_class = TipsForm
     template_name = 'tips/tips_form.html'
     model = Tips
-    fields = ['name']
-    success_url = reverse_lazy('tips_list')
+    redirect_url = 'tips_list'
 
 class TipsDelete(DeleteView):
     template_name = 'tips/tips_delete.html'
     model = Tips
-    success_url = reverse_lazy('tips_list')
+    redirect_url = 'tips_list'
+    confirmation_for_delete = False

@@ -4,15 +4,15 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
+from webapp.forms import IssueForm
 from webapp.models import Issue
 
-from webapp.views.base_views import DetailView
+from .base_views import UpdateView, DetailView, DeleteView
 
 
 class IssueList(ListView):
     template_name = 'issue/issue_list.html'
     model = Issue
-
     paginate_by = 4
     paginate_orphans = 1
     page_kwarg = 'page'
@@ -31,12 +31,18 @@ class IssueCreate(CreateView):
 
 
 class IssueUpdate(UpdateView):
+    # template_name = 'issue/issue_form.html'
+    # model = Issue
+    # fields = ['title', 'description', 'status', 'tip']
+    # success_url = reverse_lazy('issue_list')
+
+    form_class = IssueForm
     template_name = 'issue/issue_form.html'
     model = Issue
-    fields = ['title', 'description', 'status', 'tip']
-    success_url = reverse_lazy('issue_list')
+    redirect_url = 'issue_list'
 
 class IssueDelete(DeleteView):
     template_name = 'issue/issue_delete.html'
     model = Issue
-    success_url = reverse_lazy('issue_list')
+    redirect_url = 'issue_list'
+    confirmation_for_delete = False
