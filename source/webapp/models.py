@@ -9,6 +9,8 @@ class Issue(models.Model):
                                verbose_name='Тип статуса')
     tip = models.ForeignKey('Tips', related_name='issues', on_delete=models.PROTECT, null=True, blank=True,
                             verbose_name='Тип задачи')
+    project = models.ForeignKey('Projects', related_name='issues', on_delete=models.PROTECT, null=True, blank=False,
+                                verbose_name='Проект' )
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     def __str__(self):
@@ -34,3 +36,15 @@ class Tips(models.Model):
 
     def get_absolute_url(self):
         return reverse('tips_edit', kwargs={'pk':self.pk})
+
+class Projects(models.Model):
+    name = models.CharField(max_length=40, null=False, blank=False, verbose_name='Название проекта')
+    description = models.TextField(max_length=4000, null=True, blank=True, verbose_name='Описание проекта')
+    create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('projects_edit', kwargs={'pk': self.pk})
