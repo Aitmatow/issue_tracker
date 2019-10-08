@@ -1,13 +1,11 @@
 # Create your views here.
 
 from django.urls import reverse_lazy
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
-from webapp.forms import IssueForm
 from webapp.models import Issue
 
-from .base_views import UpdateView, DetailView, DeleteView
 
 
 class IssueList(ListView):
@@ -31,18 +29,13 @@ class IssueCreate(CreateView):
 
 
 class IssueUpdate(UpdateView):
-    # template_name = 'issue/issue_form.html'
-    # model = Issue
-    # fields = ['title', 'description', 'status', 'tip']
-    # success_url = reverse_lazy('issue_list')
-
-    form_class = IssueForm
     template_name = 'issue/issue_form.html'
     model = Issue
-    redirect_url = 'issue_list'
+    fields = ['title', 'description', 'status', 'tip']
+    success_url = reverse_lazy('issue_list')
+
 
 class IssueDelete(DeleteView):
     template_name = 'issue/issue_delete.html'
     model = Issue
-    redirect_url = 'issue_list'
-    confirmation_for_delete = False
+    success_url = reverse_lazy('issue_list')
