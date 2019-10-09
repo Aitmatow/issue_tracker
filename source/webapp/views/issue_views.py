@@ -24,14 +24,14 @@ class IssueDetail(DetailView):
 class IssueCreate(CreateView):
     template_name = 'issue/issue_form.html'
     model = Issue
-    fields = ['title', 'description', 'status', 'tip']
+    fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
 
 class IssueUpdate(UpdateView):
     template_name = 'issue/issue_form.html'
     model = Issue
-    fields = ['title', 'description', 'status', 'tip']
+    fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
 
