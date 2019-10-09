@@ -1,5 +1,5 @@
 # Create your views here.
-
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
@@ -39,3 +39,10 @@ class ProjectsDelete(DeleteView):
     template_name = 'projects/projects_delete.html'
     model = Projects
     success_url = reverse_lazy('projects_list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.status = 'closed'
+        self.object.save()
+        return HttpResponseRedirect(success_url)
