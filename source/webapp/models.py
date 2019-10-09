@@ -1,6 +1,9 @@
 from django.db import models
 from django.urls import reverse
 
+DEFAULT_PROJECT_STATUS = 'active'
+PROJECT_STATUS_CHOICES = [(DEFAULT_PROJECT_STATUS, 'Активен'), ('closed', 'Закрыт')]
+
 # Create your models here.
 class Issue(models.Model):
     title = models.CharField(max_length=40, null=False, blank=False, verbose_name='Заголовок')
@@ -40,6 +43,8 @@ class Tips(models.Model):
 class Projects(models.Model):
     name = models.CharField(max_length=40, null=False, blank=False, verbose_name='Название проекта')
     description = models.TextField(max_length=4000, null=True, blank=True, verbose_name='Описание проекта')
+    status = models.CharField(max_length=20, null=True, default=DEFAULT_PROJECT_STATUS, blank=False, verbose_name='Статус проекта',
+                              choices=PROJECT_STATUS_CHOICES)
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
