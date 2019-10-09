@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block menu %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Действия
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'projects_update' object.pk%} ">Редактирование</a>
+            <a class="dropdown-item" href="{% url 'projects_delete' object.pk%} ">Удаление</a>
+        </div>
+      </li>
+{% endblock %}
+{% block content %}
+   <div class="container">
+       <div class="card text-center">
+          <div class="card-header">
+            Задача
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Наименование проекта: {{ object.name }}</h5>
+            <p class="card-text">
+              <p>Описание : {{ object.description }} </p>
+              <p>Дата создания : {{ object.create_date }} </p>
+            </p>
+          </div>
+          <div class="card-footer text-muted">
+              <p>Последнее редактирование : {{ object.updated_date }} </p>
+          </div>
+        </div>
+   <div class="card text-center">
+          <div class="card-header">
+            Задачи:
+          </div>
+            {% if object.issues.count == 0%}
+                <div class="card">
+                    <p>Задач нет</p>
+                </div>
+            {% else %}
+              <div class="card">
+                <ul class="list-group list-group-flush">
+                  {% for issue in object.issues.get_queryset|dictsortreversed:"create_date"  %}
+                      <li class="list-group-item">
+                          <p>Наименование : {{ issue.title }}</p>
+                          <div class="pre">Статус : {{ issue.status}}</div>
+                      <a href="{% url 'issue_view' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
+                      <a href="{% url 'issue_update' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
+                      <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                      </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+        </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="bg-info text-white text-center">Проекты:</h1>
+    {% csrf_token %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+    <div class="card-deck text-center">
+            {% for project in object_list|dictsort:"create_date" %}
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ project.name }}</h5>
+{#                      <p class="card-text">Статус : {{ project.status }}</p>#}
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">
+                          <a href="{% url 'projects_view' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
+                          <a href="{% url 'projects_update' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
+                          <a href="{% url 'projects_delete' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                      </small>
+                    </div>
+                  </div>
+            {% endfor %}
+    </div>
+{% endblock %}
+{% block scripts %}
+<a href="{% url 'projects_add' %}" class="button2" tabindex="0">+</a>
+{% endblock %}
