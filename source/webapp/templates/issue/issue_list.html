@@ -12,12 +12,24 @@
                       <h5 class="card-title">{{ issue.title }}</h5>
                       <p class="card-text">Статус : {{ issue.status }}</p>
                       <p class="card-text">Тип : {{ issue.tip }}</p>
+                        {% if issue.project %}
+                      <p class="card-text">Проект: {{ issue.project }} </p>
+                      <p class="card-text">Статус проекта: {{ issue.project.get_status_display }} </p>
+                      {% else %}
+                            <p class="card-text">Проект : Не задан </p>
+                        {% endif %}
                     </div>
                     <div class="card-footer">
                       <small class="text-muted">
+                          {% if not issue.project.status == 'closed' %}
                           <a href="{% url 'issue_view' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
                           <a href="{% url 'issue_update' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
                           <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                          {% else %}
+                           <a href="{% url 'issue_view' issue.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
+                          <a href="{% url 'issue_update' issue.pk %}" class="btn btn-info disabled" style="width: 40px"><span class="fa fa-edit"></span></a>
+                          <a href="{% url 'issue_delete' issue.pk %}" class="btn btn-info disabled" style="width: 40px"><span class="fa fa-trash"></span></a>
+                          {% endif %}
                       </small>
                     </div>
                   </div>
