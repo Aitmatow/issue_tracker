@@ -11,9 +11,6 @@ from webapp.models import Projects
 class ProjectsList(ListView):
     template_name = 'projects/projects_list.html'
     model = Projects
-    paginate_by = 4
-    paginate_orphans = 1
-    page_kwarg = 'page'
 
 class ProjectsDetail(DetailView):
     template_name = 'projects/projects_detail.html'
