@@ -2,6 +2,7 @@
 {% block content %}
     <h1 class="bg-info text-white text-center">Задачи:</h1>
     {% csrf_token %}
+    {% include 'partial/simple_search.html' %}
     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
