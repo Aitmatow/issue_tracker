@@ -106,7 +106,6 @@ class SearchView(ListView):
     paginate_orphans = 1
     page_kwarg = 'page'
     form = None
-    searched_fields = None
 
 
     def get(self, request, *args, **kwargs):
@@ -126,9 +125,13 @@ class SearchView(ListView):
         queryset = super().get_queryset()
         if self.search_value:
             queryset = queryset.filter(
-                Q(name__icontains=self.search_value )
+               self.get_query()
             )
         return queryset
+
+    def get_query(self):
+        pass
+
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)

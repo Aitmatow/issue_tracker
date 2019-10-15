@@ -1,4 +1,5 @@
 # Create your views here.
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -13,7 +14,11 @@ class ProjectsList(SearchView):
     template_name = 'projects/projects_list.html'
     model = Projects
     form = SimpleSearchForm
-    searched_fields = ['name']
+
+    def get_query(self):
+        return Q(name__icontains=self.search_value)
+
+
 
 class ProjectsDetail(DetailView):
     template_name = 'projects/projects_detail.html'

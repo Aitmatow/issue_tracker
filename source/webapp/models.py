@@ -16,6 +16,7 @@ class Issue(models.Model):
                                 verbose_name='Проект' )
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
+
     def __str__(self):
         return self.title
 
