@@ -4,13 +4,16 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
+from webapp.forms import SimpleSearchForm
 from webapp.models import Projects
+from webapp.views.base_views import SearchView
 
 
-
-class ProjectsList(ListView):
+class ProjectsList(SearchView):
     template_name = 'projects/projects_list.html'
     model = Projects
+    form = SimpleSearchForm
+    searched_fields = ['name']
 
 class ProjectsDetail(DetailView):
     template_name = 'projects/projects_detail.html'

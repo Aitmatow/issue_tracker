@@ -2,6 +2,7 @@
 {% block content %}
     <h1 class="bg-info text-white text-center">Проекты:</h1>
     {% csrf_token %}
+    {% include 'partial/simple_search.html' %}
     <div class="container mt-5">
         <div class="card-1">
         <h3 class="text-center">Активные</h3>
