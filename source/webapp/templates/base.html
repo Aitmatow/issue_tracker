@@ -25,11 +25,11 @@
         <li class="nav-item active">
             <a class="nav-link" href="{% url 'tips_list' %}">Типы <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item active mr-auto">
             <a class="nav-link" href="{% url 'projects_list' %}">Проекты <span class="sr-only">(current)</span></a>
         </li>
         {% if request.user.is_authenticated %}
-            <li>Привет, {{ user }}!</li>
+            <span class="navbar-text">Привет, {{ user }}!</span>
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти<span class="sr-only">(current)</span></a>
             </li>

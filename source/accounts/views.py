@@ -15,6 +15,8 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            if NEXT_URL == None:
+                return redirect('issue_list')
             return redirect('http://localhost:8000' + NEXT_URL)
         else:
             context['has_error'] = True
