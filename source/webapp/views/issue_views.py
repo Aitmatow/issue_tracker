@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.http import urlencode
 
 from django.db.models import Q
@@ -54,21 +55,21 @@ class IssueDetail(DetailView):
     context_key = 'object'
 
 
-class IssueCreate(CreateView):
+class IssueCreate(LoginRequiredMixin, CreateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
 
-class IssueUpdate(UpdateView):
+class IssueUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
 
-class IssueDelete(DeleteView):
+class IssueDelete(LoginRequiredMixin,DeleteView):
     template_name = 'issue/issue_delete.html'
     model = Issue
     success_url = reverse_lazy('issue_list')

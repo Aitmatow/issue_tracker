@@ -1,4 +1,5 @@
 # Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -26,21 +27,21 @@ class ProjectsDetail(DetailView):
     context_key = 'object'
 
 
-class ProjectsCreate(CreateView):
+class ProjectsCreate(LoginRequiredMixin,CreateView):
     template_name = 'projects/projects_form.html'
     model = Projects
     fields = ['name', 'description', 'status']
     success_url = reverse_lazy('projects_list')
 
 
-class ProjectsUpdate(UpdateView):
+class ProjectsUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'projects/projects_form.html'
     model = Projects
     fields = ['name', 'description', 'status']
     success_url = reverse_lazy('projects_list')
 
 
-class ProjectsDelete(DeleteView):
+class ProjectsDelete(LoginRequiredMixin,DeleteView):
     template_name = 'projects/projects_delete.html'
     model = Projects
     success_url = reverse_lazy('projects_list')

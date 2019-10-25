@@ -1,5 +1,6 @@
 
 # Create your views here.
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import  ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
@@ -18,19 +19,19 @@ class TipsDetail(DetailView):
     template_name = 'tips/tips_detail.html'
     model = Tips
 
-class TipsCreate(CreateView):
+class TipsCreate(LoginRequiredMixin,CreateView):
     template_name = 'tips/tips_form.html'
     model = Tips
     fields = ['name']
     success_url = reverse_lazy('tips_list')
 
-class TipsUpdate(UpdateView):
+class TipsUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'tips/tips_form.html'
     model = Tips
     fields = ['name']
     success_url = reverse_lazy('tips_list')
 
-class TipsDelete(DeleteView):
+class TipsDelete(LoginRequiredMixin,DeleteView):
     template_name = 'tips/tips_delete.html'
     model = Tips
     success_url = reverse_lazy('tips_list')
