@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Регистрация</h1>
+    <form method="post" action="{% url 'accounts:register' %}">
+        {% include 'partial/issue_form.html' with button_text='Register' %}
+    </form>
+
+{% endblock %}

@@ -2,6 +2,10 @@ from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+
+
+from accounts.forms import SignUpForm
 
 NEXT_URL = ''
 def login_view(request):
@@ -25,3 +29,17 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('issue_list')
+
+def register_view(request):
+    if request.method == 'GET':
+        form = SignUpForm()
+        return render(request, 'register.html', context={'form':form})
+    elif request.method == 'POST':
+        form = SignUpForm(data=request.POST)
+        if form.is_valid():
+            user = User(username=form.cleaned_data.get('username'))
+            user.set_password(form.cleaned_data.get('password'))
+            user.save()
+            return redirect('issue_list')
+        else:
+            return render(request, 'register.html', context={'form': form})
