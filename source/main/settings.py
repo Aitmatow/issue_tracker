@@ -122,3 +122,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = 'accounts:login'
+
+HOST_NAME = 'localhost:8000'
