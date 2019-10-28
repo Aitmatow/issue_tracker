@@ -1,14 +1,18 @@
 from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.views.generic import DetailView, UpdateView
 
 from accounts.models import Token
 from main.settings import HOST_NAME
 
-from accounts.forms import SignUpForm
+from accounts.forms import SignUpForm, UserChangeForm, PasswordChangeForm
+
 
 def login_view(request):
     context = {}
@@ -50,11 +54,7 @@ def register_view(request):
             )
             user.set_password(form.cleaned_data.get('password'))
             user.save()
-
-
             token = Token.objects.create(user=user)
-
-
             activation_url = HOST_NAME + reverse('accounts:user_activate', kwargs={'token':token})
             print(activation_url)
             try:
@@ -66,7 +66,6 @@ def register_view(request):
         else:
             return render(request, 'register.html', context={'form': form})
 
-
 def user_activation_view(request,token):
     token = get_object_or_404(Token,token=token)
     user = token.user
@@ -74,3 +73,32 @@ def user_activation_view(request,token):
     user.save()
     login(request, user)
     return redirect('issue_list')
+
+class UserDetailView(DetailView):
+    model = User
+    template_name = 'user_detail.html'
+    context_object_name = 'user_obj'
+
+class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):
+    model = User
+    template_name = 'user_info_change.html'
+    form_class = UserChangeForm
+    context_object_name = 'user_obj'
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+    def get_success_url(self):
+        return reverse('accounts:detail', kwargs={'pk': self.object.pk})
+
+class UserPasswordChangeView(UserPassesTestMixin,UpdateView):
+    model = User
+    template_name = 'user_password_change.html'
+    form_class = PasswordChangeForm
+    context_object_name = 'user_obj'
+
+    def test_func(self):
+        return self.get_object() == self.request.user
+
+    def get_success_url(self):
+        return reverse('accounts:login')

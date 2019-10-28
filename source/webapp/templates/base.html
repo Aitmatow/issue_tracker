@@ -28,10 +28,13 @@
         <li class="nav-item active mr-auto">
             <a class="nav-link" href="{% url 'projects_list' %}">Проекты <span class="sr-only">(current)</span></a>
         </li>
-        {% if request.user.is_authenticated %}
-            <span class="navbar-text">Привет, {{ user }}!</span>
+        {% if user.is_authenticated %}
+            {% block menu_links %}{% endblock %}
             <li class="nav-item active">
-                <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти<span class="sr-only">(current)</span></a>
+                <a href="{% url 'accounts:logout' %}" class="nav-link">Выход</a>
+            </li>
+            <li class="nav-item active">
+                Привет, <a class="" href="{% url 'accounts:detail' user.pk %}">{{ user.username }}</a>
             </li>
         {% else %}
             <li class="nav-item active">
