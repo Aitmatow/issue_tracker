@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 # from accounts.models import Profile
+from accounts.models import Profile
 
 
 class SignUpForm(forms.Form):
@@ -42,17 +43,15 @@ class SignUpForm(forms.Form):
             return email
 
 class UserChangeForm(forms.ModelForm):
+    git_repo = forms.CharField(label='Ссылка на репозиторий GIT', max_length=120, required=False)
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email']
-        labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email'}
+        fields = ['first_name', 'last_name', 'email','git_repo']
+        labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email', 'git_repo' : 'Ссылка на гит'}
 
-# class ProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['git_repo']
-#         labels = {'git_repo' : 'Ссылка на репозиторий Git'}
-
+    # def __init__(self, *args, **kwargs):
+    #     super(UserChangeForm, self).__init__(*args, **kwargs)
+    #     self.fields['git_repo'] = 'lala'
 
 
 class PasswordChangeForm(forms.ModelForm):

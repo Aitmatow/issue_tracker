@@ -1,17 +1,20 @@
 from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import ImproperlyConfigured
+from django.db import transaction
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.views.generic import DetailView, UpdateView, ListView
 
-from accounts.models import Token
+from accounts.models import Token, Profile
 from main.settings import HOST_NAME
 
-from accounts.forms import SignUpForm, UserChangeForm, PasswordChangeForm    # ProfileForm
+from accounts.forms import SignUpForm, UserChangeForm, PasswordChangeForm  # ProfileForm
 
 
 def login_view(request):
@@ -85,22 +88,40 @@ class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):
     form_class = UserChangeForm
     context_object_name = 'user_obj'
 
-    # def update_profile(self,request):
-    #     if request.method == 'POST':
-    #         user_form = UserChangeForm(request.POST, instance=self.request.user)
-    #         profile_form = ProfileForm(request.POST, instance=self.request.user.profile)
-    #         if user_form.is_valid() and profile_form.is_valid():
-    #             user_form.save()
-    #             profile_form.save()
-    #             return redirect('accounts:detail',pk=self.object.pk)
-    #     else:
-    #         user_form = UserChangeForm(instance=self.request.user)
-    #         profile_form = ProfileForm(instance=self.request.user.profile)
-    #     return render(self.request, 'user_info_change.html', {
-    #         'user_form' : user_form,
-    #         'profile_form' : profile_form
-    #     })
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data()
+    #     # context['git_repo'] = Profile.objects.filter(user=self.request.user).get().git_repo
+    #     return context
+
+    def get_form(self, form_class=None):
+        if self.request.method == 'GET':
+            form = UserChangeForm()
+            cur_user = User.objects.get(username=self.request.user)
+            form.fields['first_name'].initial = cur_user.first_name
+            form.fields['last_name'].initial = cur_user.last_name
+            form.fields['email'].initial = cur_user.email
+            form.fields['git_repo'].initial = Profile.objects.filter(user=self.request.user).get().git_repo
+            return form
+        form_class = super().get_form_class()
+        return form_class(**self.get_form_kwargs())
+
+    def form_valid(self, form):
+        self.object = form.save()
+        cur_user = User.objects.get(pk=self.object.pk)
+        try:
+            user_profile = Profile.objects.get(user=cur_user)
+        except:
+            user_profile = None
+        if user_profile == None:
+            Profile.objects.create(
+                user=cur_user,
+                git_repo=form.cleaned_data.get('git_repo')
+            ).save()
+        else:
+            user_profile.git_repo = form.cleaned_data.get('git_repo')
+            user_profile.save()
+        return super().form_valid(form)
 
     def test_func(self):
         return self.get_object() == self.request.user
@@ -113,6 +134,7 @@ class UserPasswordChangeView(UserPassesTestMixin,UpdateView):
     template_name = 'user_password_change.html'
     form_class = PasswordChangeForm
     context_object_name = 'user_obj'
+
 
     def test_func(self):
         return self.get_object() == self.request.user
