@@ -16,4 +16,5 @@
     <p>Имя: {{ user_obj.first_name }}</p>
     <p>Фамилия: {{ user_obj.last_name }}</p>
     <p>Почта: {{ user_obj.email }}</p>
+    <p>Ссылка на репозиторий: {{ user_obj.profile.git_repo }}</p>
 {% endblock %}

@@ -6,12 +6,12 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView
 
 from accounts.models import Token
 from main.settings import HOST_NAME
 
-from accounts.forms import SignUpForm, UserChangeForm, PasswordChangeForm
+from accounts.forms import SignUpForm, UserChangeForm, PasswordChangeForm    # ProfileForm
 
 
 def login_view(request):
@@ -85,6 +85,23 @@ class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):
     form_class = UserChangeForm
     context_object_name = 'user_obj'
 
+    # def update_profile(self,request):
+    #     if request.method == 'POST':
+    #         user_form = UserChangeForm(request.POST, instance=self.request.user)
+    #         profile_form = ProfileForm(request.POST, instance=self.request.user.profile)
+    #         if user_form.is_valid() and profile_form.is_valid():
+    #             user_form.save()
+    #             profile_form.save()
+    #             return redirect('accounts:detail',pk=self.object.pk)
+    #     else:
+    #         user_form = UserChangeForm(instance=self.request.user)
+    #         profile_form = ProfileForm(instance=self.request.user.profile)
+    #     return render(self.request, 'user_info_change.html', {
+    #         'user_form' : user_form,
+    #         'profile_form' : profile_form
+    #     })
+
+
     def test_func(self):
         return self.get_object() == self.request.user
 
@@ -102,3 +119,10 @@ class UserPasswordChangeView(UserPassesTestMixin,UpdateView):
 
     def get_success_url(self):
         return reverse('accounts:login')
+
+class UsersList(ListView):
+    template_name = 'users_list.html'
+    model = User
+    paginate_by = 5
+    paginate_orphans = 1
+    page_kwarg = 'page'
