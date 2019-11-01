@@ -44,10 +44,33 @@ class SignUpForm(forms.Form):
 
 class UserChangeForm(forms.ModelForm):
     git_repo = forms.CharField(label='Ссылка на репозиторий GIT', max_length=120, required=False)
+    avatar = forms.ImageField(label='Аватар', required=False)
+    birth_date = forms.DateField(label='День рождения', input_formats=['%Y-%m-%d', '%d.%m.%Y'], required=False)
+
+    def get_initial_for_field(self, field, field_name):
+        if field_name in self.Meta.profile_fields:
+            return getattr(self.instance.profile, field_name)
+        return super().get_initial_for_field(field, field_name)
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        self.save_profile(commit)
+        return user
+
+    def save_profile(self, commit=True):
+        profile = Profile.objects.get_or_create(user=self.instance)[0]
+        for field in self.Meta.profile_fields:
+            setattr(profile, field, self.cleaned_data[field])
+        if not profile.avatar:
+            profile.avatar = 'user_pics/765-default-avatar.png'
+        if commit:
+            profile.save()
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email','git_repo']
-        labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email', 'git_repo' : 'Ссылка на гит'}
+        fields = ['first_name', 'last_name', 'email','avatar','birth_date','git_repo']
+        labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email'}
+        profile_fields = ['avatar', 'birth_date', 'git_repo']
 
     # def __init__(self, *args, **kwargs):
     #     super(UserChangeForm, self).__init__(*args, **kwargs)

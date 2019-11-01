@@ -11,10 +11,32 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-    <h1>Личный кабинет</h1>
-    <p>Имя пользователя: {{ user_obj.username }}</p>
-    <p>Имя: {{ user_obj.first_name }}</p>
-    <p>Фамилия: {{ user_obj.last_name }}</p>
-    <p>Почта: {{ user_obj.email }}</p>
-    <p>Ссылка на репозиторий: {{ user_obj.profile.git_repo }}</p>
+    <div class="container">
+       <div class="card text-center">
+          <div class="card-header">
+            Личный кабинет
+          </div>
+       <div class="row">
+       <div class="col-sm-4">
+           {% if user_obj.profile.avatar %}
+               <img class="avatar mt-3"  src="{{ user_obj.profile.avatar.url }}" width="250" height="250" alt="user picture">
+           {% endif %}
+       </div>
+       <div class="col-sm-8">
+          <div class="card-body">
+            <h5 class="card-title">Имя пользователя: {{ user_obj.username }}</h5>
+            <p class="card-text">
+                <p>Имя: {% if user_obj.first_name %} {{ user_obj.first_name }} {% else %} Нет данных {% endif %}</p>
+                <p>Фамилия: {% if user_obj.last_name %} {{ user_obj.last_name }} {% else %} Нет данных {% endif %}</p>
+                <p>Почта: {% if user_obj.email %} {{ user_obj.email }} {% else %} Нет данных {% endif %}</p>
+                <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
+                <p>Ссылка на репозиторий: {% if user_obj.profile.git_repo %}{{ user_obj.profile.git_repo }} {% else %} Нет данных {% endif %}</p>
+            </p>
+          </div>
+       </div>
+        </div><div class="card-footer text-muted">
+            <p>Последняя дата активности: {% if user_obj.last_login %}{{ user_obj.last_login }} {% else %} Нет данных {% endif %}</p>
+          </div>
+       </div>
+   </div>
 {% endblock %}

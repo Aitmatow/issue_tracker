@@ -57,6 +57,7 @@ def register_view(request):
             )
             user.set_password(form.cleaned_data.get('password'))
             user.save()
+            Profile.objects.create(user=user)
             token = Token.objects.create(user=user)
             activation_url = HOST_NAME + reverse('accounts:user_activate', kwargs={'token':token})
             print(activation_url)
@@ -89,39 +90,34 @@ class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):
     context_object_name = 'user_obj'
 
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data()
-    #     # context['git_repo'] = Profile.objects.filter(user=self.request.user).get().git_repo
-    #     return context
-
-    def get_form(self, form_class=None):
-        if self.request.method == 'GET':
-            form = UserChangeForm()
-            cur_user = User.objects.get(username=self.request.user)
-            form.fields['first_name'].initial = cur_user.first_name
-            form.fields['last_name'].initial = cur_user.last_name
-            form.fields['email'].initial = cur_user.email
-            form.fields['git_repo'].initial = Profile.objects.filter(user=self.request.user).get().git_repo
-            return form
-        form_class = super().get_form_class()
-        return form_class(**self.get_form_kwargs())
-
-    def form_valid(self, form):
-        self.object = form.save()
-        cur_user = User.objects.get(pk=self.object.pk)
-        try:
-            user_profile = Profile.objects.get(user=cur_user)
-        except:
-            user_profile = None
-        if user_profile == None:
-            Profile.objects.create(
-                user=cur_user,
-                git_repo=form.cleaned_data.get('git_repo')
-            ).save()
-        else:
-            user_profile.git_repo = form.cleaned_data.get('git_repo')
-            user_profile.save()
-        return super().form_valid(form)
+    # def get_form(self, form_class=None):
+    #     if self.request.method == 'GET':
+    #         form = UserChangeForm()
+    #         cur_user = User.objects.get(username=self.request.user)
+    #         form.fields['first_name'].initial = cur_user.first_name
+    #         form.fields['last_name'].initial = cur_user.last_name
+    #         form.fields['email'].initial = cur_user.email
+    #         form.fields['git_repo'].initial = Profile.objects.filter(user=self.request.user).get().git_repo
+    #         return form
+    #     form_class = super().get_form_class()
+    #     return form_class(**self.get_form_kwargs())
+    #
+    # def form_valid(self, form):
+    #     self.object = form.save()
+    #     cur_user = User.objects.get(pk=self.object.pk)
+    #     try:
+    #         user_profile = Profile.objects.get(user=cur_user)
+    #     except:
+    #         user_profile = None
+    #     if user_profile == None:
+    #         Profile.objects.create(
+    #             user=cur_user,
+    #             git_repo=form.cleaned_data.get('git_repo')
+    #         ).save()
+    #     else:
+    #         user_profile.git_repo = form.cleaned_data.get('git_repo')
+    #         user_profile.save()
+    #     return super().form_valid(form)
 
     def test_func(self):
         return self.get_object() == self.request.user

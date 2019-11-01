@@ -17,17 +17,14 @@ class Token(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(null=True, blank=True, upload_to='user_pics', verbose_name='Аватар')
+    about_me = models.TextField(max_length=3000, null=True, blank=False, verbose_name='О себе')
     git_repo = models.CharField(max_length=125,verbose_name='Ссылка на репозиторий', blank=True)
 
-    # @receiver
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
-    #
-    # @receiver(post_save, sender = User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
-
     def __str__(self):
-        return str(self.user.username)
+        return self.user.get_full_name() + "'s Profile"
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
 
