@@ -45,7 +45,7 @@ class SignUpForm(forms.Form):
 class UserChangeForm(forms.ModelForm):
     git_repo = forms.CharField(label='Ссылка на репозиторий GIT', max_length=120, required=False)
     avatar = forms.ImageField(label='Аватар', required=False)
-    birth_date = forms.DateField(label='День рождения', input_formats=['%Y-%m-%d', '%d.%m.%Y'], required=False)
+    about_me = forms.CharField(label='О себе', required=False, max_length=3000, widget=forms.Textarea)
 
     def get_initial_for_field(self, field, field_name):
         if field_name in self.Meta.profile_fields:
@@ -62,15 +62,15 @@ class UserChangeForm(forms.ModelForm):
         for field in self.Meta.profile_fields:
             setattr(profile, field, self.cleaned_data[field])
         if not profile.avatar:
-            profile.avatar = 'user_pics/765-default-avatar.png'
+            profile.avatar = None
         if commit:
             profile.save()
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email','avatar','birth_date','git_repo']
+        fields = ['first_name', 'last_name', 'email','avatar','about_me','git_repo']
         labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email'}
-        profile_fields = ['avatar', 'birth_date', 'git_repo']
+        profile_fields = ['avatar', 'about_me', 'git_repo']
 
     # def __init__(self, *args, **kwargs):
     #     super(UserChangeForm, self).__init__(*args, **kwargs)

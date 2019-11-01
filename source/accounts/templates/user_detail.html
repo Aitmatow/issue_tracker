@@ -19,7 +19,9 @@
        <div class="row">
        <div class="col-sm-4">
            {% if user_obj.profile.avatar %}
-               <img class="avatar mt-3"  src="{{ user_obj.profile.avatar.url }}" width="250" height="250" alt="user picture">
+               <img class="avatar mt-3 mb-3"  src="{{ user_obj.profile.avatar.url }}" width="250" height="250" alt="user picture">
+           {% else %}
+               <img class="avatar mt-3 mb-3"  src="/uploads/user_pics/765-default-avatar.png" width="250" height="250" alt="user picture">
            {% endif %}
        </div>
        <div class="col-sm-8">
@@ -29,8 +31,15 @@
                 <p>Имя: {% if user_obj.first_name %} {{ user_obj.first_name }} {% else %} Нет данных {% endif %}</p>
                 <p>Фамилия: {% if user_obj.last_name %} {{ user_obj.last_name }} {% else %} Нет данных {% endif %}</p>
                 <p>Почта: {% if user_obj.email %} {{ user_obj.email }} {% else %} Нет данных {% endif %}</p>
-                <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
-                <p>Ссылка на репозиторий: {% if user_obj.profile.git_repo %}{{ user_obj.profile.git_repo }} {% else %} Нет данных {% endif %}</p>
+              <div class="dropdown">
+                  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-secondary">
+                    Больше информации
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dLabel">
+                  <p class="pre">О себе: {% if user_obj.profile.about_me %} {{ user_obj.profile.about_me }} {% else %} Нет данных {% endif %}</p>
+                  <p>Ссылка на репозиторий: {% if user_obj.profile.git_repo %}{{ user_obj.profile.git_repo }} {% else %} Нет данных {% endif %}</p>
+                  </div>
+              </div>
             </p>
           </div>
        </div>
