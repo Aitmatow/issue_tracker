@@ -43,7 +43,7 @@ class SignUpForm(forms.Form):
             return email
 
 class UserChangeForm(forms.ModelForm):
-    git_repo = forms.CharField(label='Ссылка на репозиторий GIT', max_length=120, required=False)
+    git_repo = forms.CharField(label='Ссылка на репозиторий GIT', max_length=120, required=False, widget=forms.URLInput)
     avatar = forms.ImageField(label='Аватар', required=False)
     about_me = forms.CharField(label='О себе', required=False, max_length=3000, widget=forms.Textarea)
 
@@ -72,9 +72,11 @@ class UserChangeForm(forms.ModelForm):
         labels = {'first_name': 'Имя', 'last_name': 'Фамилия', 'email': 'Email'}
         profile_fields = ['avatar', 'about_me', 'git_repo']
 
-    # def __init__(self, *args, **kwargs):
-    #     super(UserChangeForm, self).__init__(*args, **kwargs)
-    #     self.fields['git_repo'] = 'lala'
+    def clean_git_repo(self):
+        git_repo = self.cleaned_data.get('git_repo')
+        if git_repo.split('/')[0] != 'https' and git_repo.split('/')[2] != 'github.com':
+            raise ValidationError('Вы ввели не валидную ссылку, пожалуйста введите ссылку на ваш GitHub!', code='invalid_link')
+        return git_repo
 
 
 class PasswordChangeForm(forms.ModelForm):
