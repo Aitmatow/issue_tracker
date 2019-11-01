@@ -1,6 +1,6 @@
 
 # Create your views here.
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import  ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
@@ -27,11 +27,20 @@ class StatusCreate(LoginRequiredMixin,CreateView):
     fields = ['name']
     success_url = reverse_lazy('status_list')
 
+
+def edit_permission_test(model_object):
+    print(model_object)
+    return False
+
+
 class StatusUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'status/statuses_form.html'
     model = Statuses
     fields = ['name']
     success_url = reverse_lazy('status_list')
+
+
+
 
 class StatusDelete(LoginRequiredMixin,DeleteView):
     template_name = 'status/statuses_delete.html'

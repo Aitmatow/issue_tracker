@@ -1,11 +1,7 @@
 from urllib.parse import urlencode
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.core.exceptions import ImproperlyConfigured
-from django.db import transaction
-from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -89,35 +85,6 @@ class UserPersonalInfoChangeView(UserPassesTestMixin, UpdateView):
     form_class = UserChangeForm
     context_object_name = 'user_obj'
 
-
-    # def get_form(self, form_class=None):
-    #     if self.request.method == 'GET':
-    #         form = UserChangeForm()
-    #         cur_user = User.objects.get(username=self.request.user)
-    #         form.fields['first_name'].initial = cur_user.first_name
-    #         form.fields['last_name'].initial = cur_user.last_name
-    #         form.fields['email'].initial = cur_user.email
-    #         form.fields['git_repo'].initial = Profile.objects.filter(user=self.request.user).get().git_repo
-    #         return form
-    #     form_class = super().get_form_class()
-    #     return form_class(**self.get_form_kwargs())
-    #
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     cur_user = User.objects.get(pk=self.object.pk)
-    #     try:
-    #         user_profile = Profile.objects.get(user=cur_user)
-    #     except:
-    #         user_profile = None
-    #     if user_profile == None:
-    #         Profile.objects.create(
-    #             user=cur_user,
-    #             git_repo=form.cleaned_data.get('git_repo')
-    #         ).save()
-    #     else:
-    #         user_profile.git_repo = form.cleaned_data.get('git_repo')
-    #         user_profile.save()
-    #     return super().form_valid(form)
 
     def test_func(self):
         return self.get_object() == self.request.user

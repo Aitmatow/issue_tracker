@@ -1,5 +1,7 @@
 # Create your views here.
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.utils.http import urlencode
 
 from django.db.models import Q
@@ -7,9 +9,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
+from accounts.models import Teams
 from webapp.forms import SimpleSearchForm
-from webapp.models import Issue
-
+from webapp.models import Issue, Projects
 
 
 class IssueList(ListView):
@@ -55,21 +57,49 @@ class IssueDetail(DetailView):
     context_key = 'object'
 
 
+def edit_permission_test(project, user):
+    user_obj = User.objects.get(username=user)
+    temp = Teams.objects.filter(project=project).values('user')
+    for i in temp:
+        if (i.get('user') == user_obj.pk):
+            return True
+        return False
+
+
 class IssueCreate(LoginRequiredMixin, CreateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        project = form.cleaned_data.get('project')
+        temp = edit_permission_test(project, self.request.user)
+        if temp == True:
+            self.object = form.save()
+            return super().form_valid(form)
+        else:
+            return HttpResponse('У вас нет доступа к данному проекту!', status=403)
 
-class IssueUpdate(LoginRequiredMixin,UpdateView):
+
+
+class IssueUpdate(UserPassesTestMixin,UpdateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
 
+    def test_func(self):
+        obj = self.get_object().project
+        return edit_permission_test(obj, self.request.user)
 
-class IssueDelete(LoginRequiredMixin,DeleteView):
+
+class IssueDelete(UserPassesTestMixin,DeleteView):
     template_name = 'issue/issue_delete.html'
     model = Issue
     success_url = reverse_lazy('issue_list')
+
+    def test_func(self):
+        obj = self.get_object().project
+        return edit_permission_test(obj, self.request.user)

@@ -6,6 +6,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from webapp.models import Projects
+
 
 class Token(models.Model):
     token = models.UUIDField(verbose_name='Token', default=uuid4())
@@ -28,3 +30,16 @@ class Profile(models.Model):
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
 
+
+class Teams(models.Model):
+    user = models.ForeignKey(User, related_name='teams',on_delete=models.PROTECT, null=True, blank=True, verbose_name='Пользователь')
+    project = models.ForeignKey(Projects, related_name='teams', on_delete=models.PROTECT)
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
+    def __str__(self):
+        return self.project.name
+
+    class Meta:
+        verbose_name_plural = 'Команды'
+        verbose_name = 'Команда'

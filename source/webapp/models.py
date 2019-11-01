@@ -20,6 +20,10 @@ class Issue(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name_plural = 'Задачи'
+        verbose_name = 'Задачу'
+
 
 
 class Statuses(models.Model):
@@ -31,6 +35,9 @@ class Statuses(models.Model):
     def get_absolute_url(self):
         return reverse('statuses_edit', kwargs={'pk': self.pk})
 
+    class Meta:
+        verbose_name_plural = 'Статус'
+        verbose_name = 'Статусы'
 
 class Tips(models.Model):
     name = models.CharField(max_length=20, verbose_name='Тип')
@@ -40,6 +47,10 @@ class Tips(models.Model):
 
     def get_absolute_url(self):
         return reverse('tips_edit', kwargs={'pk':self.pk})
+
+    class Meta:
+        verbose_name_plural = 'Тип'
+        verbose_name = 'Типы'
 
 class Projects(models.Model):
     name = models.CharField(max_length=40, null=False, blank=False, verbose_name='Название проекта')
@@ -54,3 +65,7 @@ class Projects(models.Model):
 
     def get_absolute_url(self):
         return reverse('projects_edit', kwargs={'pk': self.pk})
+
+    class Meta:
+        verbose_name_plural = 'Проект'
+        verbose_name = 'Проекты'

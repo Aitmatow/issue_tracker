@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from accounts.models import Profile
+from accounts.models import Profile, Teams
 # Register your models here.
 from webapp.models import Issue, Statuses, Tips, Projects
 
@@ -23,6 +23,9 @@ class ProfileInline(admin.StackedInline):
 class ProfileAdmin(UserAdmin):
     inlines = [ProfileInline]
 
+
+
+
 admin.site.register(Issue, IssueAdmin)
 admin.site.register(Statuses)
 admin.site.register(Tips)
@@ -30,3 +33,4 @@ admin.site.register(Projects)
 admin.site.register(Profile)
 admin.site.unregister(User)
 admin.site.register(User, ProfileAdmin)
+admin.site.register(Teams)
