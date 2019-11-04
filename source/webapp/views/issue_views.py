@@ -1,7 +1,7 @@
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.http import urlencode
 
 from django.db.models import Q
@@ -80,7 +80,8 @@ class IssueCreate(LoginRequiredMixin, CreateView):
             self.object = form.save()
             return super().form_valid(form)
         else:
-            return HttpResponse('У вас нет доступа к данному проекту!', status=403)
+            # return HttpResponse('У вас нет доступа к данному проекту!', status=403)
+            return HttpResponseForbidden('У вас нет доступа к данному проекту!')
 
 
 
@@ -89,6 +90,17 @@ class IssueUpdate(UserPassesTestMixin,UpdateView):
     model = Issue
     fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        project = form.cleaned_data.get('project')
+        temp = edit_permission_test(project, self.request.user)
+        if temp == True:
+            self.object = form.save()
+            return super().form_valid(form)
+        else:
+            # return HttpResponse('У вас нет доступа к данному проекту!', status=403)
+            return HttpResponseForbidden('У вас нет доступа к данному проекту!')
 
     def test_func(self):
         obj = self.get_object().project
