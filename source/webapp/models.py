@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
@@ -15,7 +16,10 @@ class Issue(models.Model):
     project = models.ForeignKey('Projects', related_name='issues', on_delete=models.PROTECT, null=True, blank=False,
                                 verbose_name='Проект' )
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-
+    created_by = models.ForeignKey(User, related_name='issues', on_delete=models.PROTECT, null=True, blank=False,
+                                   verbose_name='Автор задачи')
+    assigned_to = models.ForeignKey(User, related_name='ussues', on_delete=models.PROTECT, null=True, blank=False,
+                                    verbose_name='Исполнитель задачи')
 
     def __str__(self):
         return self.title
