@@ -10,7 +10,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 
 from accounts.models import Teams
-from webapp.forms import SimpleSearchForm
+from webapp.forms import SimpleSearchForm, IssueForm
 from webapp.models import Issue, Projects
 
 
@@ -69,8 +69,22 @@ def edit_permission_test(project, user):
 class IssueCreate(LoginRequiredMixin, CreateView):
     template_name = 'issue/issue_form.html'
     model = Issue
-    fields = ['title', 'description', 'project', 'status', 'tip']
+    # fields = ['title', 'description', 'project', 'status', 'tip', 'created_by', 'assigned_to']
     success_url = reverse_lazy('issue_list')
+    form_class = IssueForm
+
+    def get_form(self, form_class=None):
+        form = super(IssueCreate,self).get_form()
+        form.fields['created_by'].queryset = User.objects.filter(username=self.request.user)
+        form.fields['project'].queryset = Projects.objects.filter(teams__user=self.request.user)
+        cur_project = Projects.objects.filter(teams__user=self.request.user)
+        users_in_team = Teams.objects.filter(project=cur_project[0])
+        wanted_users = set()
+        for i in users_in_team:
+            wanted_users.add(i.user)
+        form.fields['assigned_to'].queryset=User.objects.filter(username__in=wanted_users)
+        return form
+
 
     def form_valid(self, form):
         """If the form is valid, save the associated model."""
@@ -80,7 +94,6 @@ class IssueCreate(LoginRequiredMixin, CreateView):
             self.object = form.save()
             return super().form_valid(form)
         else:
-            # return HttpResponse('У вас нет доступа к данному проекту!', status=403)
             return HttpResponseForbidden('У вас нет доступа к данному проекту!')
 
 
@@ -88,8 +101,21 @@ class IssueCreate(LoginRequiredMixin, CreateView):
 class IssueUpdate(UserPassesTestMixin,UpdateView):
     template_name = 'issue/issue_form.html'
     model = Issue
-    fields = ['title', 'description', 'project', 'status', 'tip']
+    # fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
+    form_class = IssueForm
+
+    def get_form(self, form_class=None):
+        form = super(IssueUpdate,self).get_form()
+        form.fields['created_by'].queryset = User.objects.filter(username=self.request.user)
+        form.fields['project'].queryset = Projects.objects.filter(teams__user=self.request.user)
+        cur_project = Projects.objects.filter(teams__user=self.request.user)
+        users_in_team = Teams.objects.filter(project=cur_project[0])
+        wanted_users = set()
+        for i in users_in_team:
+            wanted_users.add(i.user)
+        form.fields['assigned_to'].queryset=User.objects.filter(username__in=wanted_users)
+        return form
 
     def form_valid(self, form):
         """If the form is valid, save the associated model."""

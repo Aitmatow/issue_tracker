@@ -1,13 +1,20 @@
 from django import forms
+from django.contrib.auth.models import User
 from django.forms import widgets
 from webapp.models import Issue, Statuses, Tips, Projects
 
 
 class IssueForm(forms.ModelForm):
-    # title = forms.CharField(max_length=200, required=True, label = 'Наименование')
-    # description = forms.CharField(max_length=3000, required=False, label='Описание', widget=widgets.Textarea)
-    # status = forms.ModelChoiceField(queryset=Statuses.objects.all(), label='Статус', required=True, empty_label=None)
-    # tip = forms.ModelChoiceField(queryset=Tips.objects.all(), label='Тип задачи', required=True, empty_label=None)
+    created_by = forms.ModelChoiceField(queryset=User.objects.all(), label='Автор задачи', required=True, empty_label=None)
+    assigned_to = forms.ModelChoiceField(queryset=None, label='Исполнитель задачи', required=True, empty_label=None)
+    project = forms.ModelChoiceField(queryset=None, label='Проект', required=True, empty_label=None)
+
+
+    # def __init__(self,*args,**kwargs):
+    #     print(kwargs.values())
+    #     super(IssueForm, self).__init__(*args, **kwargs)
+    #     self.fields['created_by'].queryset = User.objects.filter(username='admin')
+
 
     class Meta:
         model = Issue
