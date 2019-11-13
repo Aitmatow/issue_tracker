@@ -23,6 +23,10 @@
             <p class="card-text">
               <p>Описание : {{ object.description }} </p>
               <p>Дата создания : {{ object.create_date }} </p>
+              <p>Пользователи: </p>
+              {% for i in users %}
+                  <p>Логин: {{ i.user }} Дата начала работ: {{ i.created_date }}</p>
+              {% endfor %}
             </p>
           </div>
           <div class="card-footer text-muted">

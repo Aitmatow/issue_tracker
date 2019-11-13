@@ -29,7 +29,6 @@ class Issue(models.Model):
         verbose_name = 'Задачу'
 
 
-
 class Statuses(models.Model):
     name = models.CharField(max_length=20, verbose_name='Статус')
 
@@ -63,6 +62,7 @@ class Projects(models.Model):
                               choices=PROJECT_STATUS_CHOICES)
     create_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
 
     def __str__(self):
         return self.name

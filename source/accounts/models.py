@@ -34,8 +34,8 @@ class Profile(models.Model):
 class Teams(models.Model):
     user = models.ForeignKey(User, related_name='teams',on_delete=models.PROTECT, null=True, blank=True, verbose_name='Пользователь')
     project = models.ForeignKey(Projects, related_name='teams', on_delete=models.PROTECT)
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    updated_date = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+    created_date = models.DateTimeField(verbose_name='Дата создания', null=True)
+    updated_date = models.DateTimeField(verbose_name='Дата окончания',null=True)
 
     def __str__(self):
         return self.project.name

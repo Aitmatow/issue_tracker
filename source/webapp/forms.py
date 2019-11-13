@@ -44,3 +44,17 @@ class ProjectsForm(forms.ModelForm):
 
 class SimpleSearchForm(forms.Form):
     search = forms.CharField(max_length=100, required=False, label='Найти')
+
+
+class UserToProject(forms.ModelForm):
+    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(), label='Пользователи', required=True)
+    start_date = forms.DateField(label='Дата начала', widget=forms.SelectDateWidget)
+    class Meta:
+        model = Projects
+        fields = ['name', 'description', 'status', 'users']
+        profile_fields = ['users']
+
+    def __init__(self, *args, **kwargs):
+        pk = kwargs.pop('pk')
+        super().__init__(*args, **kwargs)
+        self.fields['users'].queryset = User.objects.all().exclude(pk=pk)
