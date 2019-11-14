@@ -1,34 +1,19 @@
+from datetime import datetime
 
-# Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import  ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.views.generic.edit import CreateView,DeleteView
 
 from accounts.models import Teams
-from webapp.forms import Team
-from webapp.models import Tips, Projects
+from webapp.forms import Team, TeamDelete
+from webapp.models import  Projects
 
-
-class TeamsList(ListView):
-    template_name = 'teams/teams_list.html'
-    model = Teams
-    paginate_by = 5
-    paginate_orphans = 1
-    page_kwarg = 'page'
-
-
-class TeamsDetail(DetailView):
-    template_name = 'teams/teams_detail.html'
-    model = Teams
 
 class TeamsCreate(LoginRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
-    success_url = reverse_lazy('projects_list')
     form_class = Team
 
     def form_valid(self, form):
@@ -51,14 +36,22 @@ class TeamsCreate(LoginRequiredMixin,CreateView):
         form.fields['user'].queryset = User.objects.exclude(username__in=closed_users)
         return form
 
-
-class TeamsUpdate(LoginRequiredMixin,UpdateView):
+class TeamsDelete(LoginRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
-    success_url = reverse_lazy('teams_list')
-    form_class = Team
+    form_class = TeamDelete
 
-class TeamsDelete(LoginRequiredMixin,DeleteView):
-    template_name = 'teams/teams_delete.html'
-    model = Teams
-    success_url = reverse_lazy('teams_list')
+    def get_form(self, form_class=None):
+        form = super(TeamsDelete,self).get_form()
+        project = Projects.objects.get(id=self.request.path.split('/')[-1])
+        teams = Teams.objects.filter(project=project)
+        cur_users = set()
+        for i in teams:
+            cur_users.add(i.user)
+        form.fields['user'].queryset = User.objects.filter(username__in=cur_users)
+        return form
+
+    def form_valid(self, form):
+        project = Projects.objects.get(id=self.request.path.split('/')[-1])
+        Teams.objects.filter(user=form.cleaned_data['user'], project=project).update(updated_date=datetime.now())
+        return redirect('projects_view', project.id)
