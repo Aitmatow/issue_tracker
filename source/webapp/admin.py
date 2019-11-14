@@ -17,7 +17,7 @@ class IssueAdmin(admin.ModelAdmin):
 
 class ProfileInline(admin.StackedInline):
     model = Profile
-    fields = ['birth_date', 'avatar','git_repo']
+    fields = ['avatar','git_repo']
 
 
 class ProfileAdmin(UserAdmin):

@@ -67,37 +67,11 @@ class ProjectsCreate(LoginRequiredMixin,CreateView):
         return kwargs
 
 
-
 class ProjectsUpdate(LoginRequiredMixin,UpdateView):
-    template_name = 'projects/projects_form.html'
+    template_name = 'projects/projects_update.html'
     model = Projects
-    # fields = ['name', 'description', 'status']
+    fields = ['name', 'description', 'status']
     success_url = reverse_lazy('projects_list')
-    form_class = UserToProject
-
-    def form_valid(self, form):
-        self.object = form.save()
-        print(User.objects.get(id=self.request.user.id))
-        Teams.objects.create(
-            user=User.objects.get(id=self.request.user.id),
-            project=self.object,
-            created_date=datetime.now()
-        )
-        for i in form.cleaned_data['users']:
-            print(User.objects.get(username=i))
-            Teams.objects.create(
-                user=User.objects.get(username=i),
-                project=self.object,
-                created_date=form.cleaned_data['start_date']
-            )
-        return super().form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['pk'] = self.request.user.id
-        return kwargs
-
-
 
 
 class ProjectsDelete(LoginRequiredMixin,DeleteView):

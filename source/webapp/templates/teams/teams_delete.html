@@ -2,7 +2,8 @@
 {% block content %}
 <h1>Удаление</h1>
 <form method="post">{% csrf_token %}
-    Вы уверены что хотите удалить задачу "{{ object }}" ?
+    Вы уверены что хотите удалить команду "{{ object }}" ?
     <p><input type="submit" value="Удалить" class="btn btn-primary"/> </p>
+    <p>></p>
 </form>
 {% endblock %}

@@ -16,21 +16,34 @@
    <div class="container">
        <div class="card text-center">
           <div class="card-header">
-            Задача
+            Проект
           </div>
           <div class="card-body">
             <h5 class="card-title">Наименование проекта: {{ object.name }}</h5>
             <p class="card-text">
               <p>Описание : {{ object.description }} </p>
               <p>Дата создания : {{ object.create_date }} </p>
-              <p>Пользователи: </p>
-              {% for i in users %}
-                  <p>Логин: {{ i.user }} Дата начала работ: {{ i.created_date }}</p>
-              {% endfor %}
-            </p>
-          </div>
-          <div class="card-footer text-muted">
-              <p>Последнее редактирование : {{ object.updated_date }} </p>
+          <table class="table table-bordered">
+              <thead>
+              <tr>
+                  <td colspan="2">Работают над проектом:</td>
+              </tr>
+              </thead>
+              <tbody>
+                  {% for i in users %}
+                    <tr>
+                      <td>{{ i.user }}</td>
+                      <td>{{ i.created_date }}</td>
+                    </tr>
+                  {% endfor %}
+                    <tr>
+                      <td colspan="2">
+                          <a class="btn btn-secondary" href= {% url 'teams_new' object.pk %}>Добавить</a>
+                          <a class="btn btn-secondary" href= {% url 'teams_new' object.pk %}>Удалить</a>
+                      </td>
+                    </tr>
+              </tbody>
+            </table>
           </div>
         </div>
    <div class="card text-center">

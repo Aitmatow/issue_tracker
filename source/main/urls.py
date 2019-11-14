@@ -26,5 +26,6 @@ urlpatterns = [
     path('statuses/', include('webapp.urls.status_urls')),
     path('tips/', include('webapp.urls.tips_urls')),
     path('projects/', include('webapp.urls.projects_urls')),
-    path('accounts/', include('accounts.urls', namespace='accounts'))
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('teams/', include('webapp.urls.teams_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

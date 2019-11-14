@@ -33,12 +33,11 @@ class Profile(models.Model):
 
 class Teams(models.Model):
     user = models.ForeignKey(User, related_name='teams',on_delete=models.PROTECT, null=True, blank=True, verbose_name='Пользователь')
-    project = models.ForeignKey(Projects, related_name='teams', on_delete=models.PROTECT)
+    project = models.ForeignKey(Projects, related_name='teams', on_delete=models.PROTECT, null=True)
     created_date = models.DateTimeField(verbose_name='Дата создания', null=True)
     updated_date = models.DateTimeField(verbose_name='Дата окончания',null=True)
 
-    def __str__(self):
-        return self.project.name
+
 
     class Meta:
         verbose_name_plural = 'Команды'

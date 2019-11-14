@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.urls import reverse
-from django.views.generic import DetailView, UpdateView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, UpdateView, ListView, CreateView
 
 from accounts.models import Token, Profile
 from main.settings import HOST_NAME
@@ -111,3 +111,4 @@ class UsersList(ListView):
     paginate_by = 5
     paginate_orphans = 1
     page_kwarg = 'page'
+

@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import widgets
+
+from accounts.models import Teams
 from webapp.models import Issue, Statuses, Tips, Projects
 
 
@@ -58,3 +60,10 @@ class UserToProject(forms.ModelForm):
         pk = kwargs.pop('pk')
         super().__init__(*args, **kwargs)
         self.fields['users'].queryset = User.objects.all().exclude(pk=pk)
+
+
+class Team(forms.ModelForm):
+
+    class Meta:
+        model = Teams
+        exclude = ['project', 'updated_date']
