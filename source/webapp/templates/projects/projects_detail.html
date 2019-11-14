@@ -38,10 +38,10 @@
                   {% endfor %}
                     <tr>
                       <td colspan="2">
-                          {% if perms.webapp.add_teams %}
+                          {% if perms.accounts.add_teams %}
                             <a class="btn btn-secondary" href= {% url 'teams_new' object.pk %}>Добавить</a>
                           {% endif %}
-                          {% if perms.webapp.change_teams %}
+                          {% if perms.accounts.change_teams %}
                             <a class="btn btn-secondary" href= {% url 'teams_delete' object.pk %}>Удалить</a>
                           {% endif %}
                       </td>

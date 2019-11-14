@@ -8,7 +8,9 @@
     "status": 2,
     "tip": 1,
     "project": 5,
-    "create_date": "2019-09-26T08:42:15.340Z"
+    "create_date": "2019-09-26T08:42:15.340Z",
+    "created_by": 17,
+    "assigned_to": 16
   }
 },
 {
@@ -20,7 +22,9 @@
     "status": 1,
     "tip": 3,
     "project": 5,
-    "create_date": "2019-09-26T08:42:44.104Z"
+    "create_date": "2019-09-26T08:42:44.104Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -32,7 +36,9 @@
     "status": 3,
     "tip": 2,
     "project": 1,
-    "create_date": "2019-09-26T08:43:02.904Z"
+    "create_date": "2019-09-26T08:43:02.904Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -44,7 +50,9 @@
     "status": 1,
     "tip": 1,
     "project": 2,
-    "create_date": "2019-10-09T17:34:00.712Z"
+    "create_date": "2019-10-09T17:34:00.712Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -56,7 +64,9 @@
     "status": 1,
     "tip": 1,
     "project": 1,
-    "create_date": "2019-10-09T17:34:34.003Z"
+    "create_date": "2019-10-09T17:34:34.003Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -68,7 +78,9 @@
     "status": 1,
     "tip": 1,
     "project": 2,
-    "create_date": "2019-10-09T17:34:58.018Z"
+    "create_date": "2019-10-09T17:34:58.018Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -80,7 +92,9 @@
     "status": 3,
     "tip": 1,
     "project": 2,
-    "create_date": "2019-10-09T17:36:53.554Z"
+    "create_date": "2019-10-09T17:36:53.554Z",
+    "created_by": null,
+    "assigned_to": null
   }
 },
 {
@@ -92,7 +106,23 @@
     "status": 1,
     "tip": 2,
     "project": 4,
-    "create_date": "2019-11-04T11:35:01.038Z"
+    "create_date": "2019-11-04T11:35:01.038Z",
+    "created_by": null,
+    "assigned_to": null
+  }
+},
+{
+  "model": "webapp.issue",
+  "pk": 26,
+  "fields": {
+    "title": "\u0417\u0430\u0434\u0430\u0447\u0430 \u043e\u0442 \u0410\u0434\u043c\u0438\u043d\u0430",
+    "description": "\u042d\u0442\u043e \u043c\u043e\u044f \u0437\u0430\u0434\u0430\u0447\u0430 \u043e\u0442 \u0410\u0414\u043c\u0438\u043d\u0438\u0441\u0442\u0440\u0430\u0442\u043e\u0440\u0430",
+    "status": 1,
+    "tip": 1,
+    "project": 1,
+    "create_date": "2019-11-06T08:31:36.470Z",
+    "created_by": 1,
+    "assigned_to": 9
   }
 },
 {
@@ -154,9 +184,9 @@
   "fields": {
     "name": "\u0420\u0430\u0437\u0432\u043b\u0435\u0447\u0435\u043d\u0438\u044f",
     "description": "",
-    "status": "closed",
+    "status": "active",
     "create_date": "2019-10-08T17:13:03.102Z",
-    "updated_date": "2019-10-25T05:31:03.591Z"
+    "updated_date": "2019-11-14T06:31:37.401Z"
   }
 },
 {
@@ -193,57 +223,25 @@
   }
 },
 {
-  "model": "auth.user",
-  "pk": 1,
+  "model": "webapp.projects",
+  "pk": 8,
   "fields": {
-    "password": "pbkdf2_sha256$150000$rF1IFe7EP3uw$3CMifRwf15HNjDZ6T1DG/3Suq6GSaRTBTyjilefLM34=",
-    "last_login": "2019-11-01T02:50:04.812Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "\u0414\u0438\u044f\u0440",
-    "last_name": "\u0410\u0439\u0442\u043c\u0430\u0442\u043e\u0432",
-    "email": "aitmarowd@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2019-09-26T07:53:39Z",
-    "groups": [],
-    "user_permissions": []
+    "name": "test",
+    "description": "test",
+    "status": "closed",
+    "create_date": "2019-11-13T08:07:26.302Z",
+    "updated_date": "2019-11-13T08:10:04.257Z"
   }
 },
 {
-  "model": "auth.user",
-  "pk": 9,
+  "model": "webapp.projects",
+  "pk": 24,
   "fields": {
-    "password": "pbkdf2_sha256$150000$8u33pEoKezmj$H1aEQAzr8L9ROTN4kq1nx73WncAxIWWoTv4KLtoY5JY=",
-    "last_login": "2019-11-01T07:36:28.469Z",
-    "is_superuser": false,
-    "username": "test",
-    "first_name": "Test",
-    "last_name": "Testovisch",
-    "email": "test@mail.ru",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2019-10-29T08:03:43Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
-  "pk": 10,
-  "fields": {
-    "password": "pbkdf2_sha256$150000$mYZoTxKIlSHF$f83wBOY4wQ4a36Hb+0yPLb/Bs3L2b7uDoweJcO8yxfQ=",
-    "last_login": "2019-10-29T08:36:40.307Z",
-    "is_superuser": false,
-    "username": "test2",
-    "first_name": "test2",
-    "last_name": "",
-    "email": "test2@mail.ru",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2019-10-29T08:36:15.928Z",
-    "groups": [],
-    "user_permissions": []
+    "name": "test2",
+    "description": "123",
+    "status": "active",
+    "create_date": "2019-11-13T09:08:38.172Z",
+    "updated_date": "2019-11-13T09:08:38.212Z"
   }
 }
 ]

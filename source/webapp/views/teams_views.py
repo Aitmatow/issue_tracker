@@ -16,7 +16,7 @@ class TeamsCreate(PermissionRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
     form_class = Team
-    permission_required = 'webapp.add_teams'
+    permission_required = 'accounts.add_teams'
     permission_denied_message = 'Доступ запрещен!'
 
     def form_valid(self, form):
@@ -43,7 +43,7 @@ class TeamsDelete(PermissionRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
     form_class = TeamDelete
-    permission_required = 'webapp.change_teams'
+    permission_required = 'accounts.change_teams'
     permission_denied_message = 'Доступ запрещен!'
 
     def get_form(self, form_class=None):
