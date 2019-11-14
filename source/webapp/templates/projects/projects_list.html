@@ -16,8 +16,12 @@
                             <div class="card-footer">
                               <small class="text-muted">
                                   <a href="{% url 'projects_view' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
-                                  <a href="{% url 'projects_update' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
-                                  <a href="{% url 'projects_delete' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                                  {% if perms.webapp.change_projects %}
+                                    <a href="{% url 'projects_update' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
+                                  {% endif %}
+                                  {% if perms.webapp.delete_projects %}
+                                    <a href="{% url 'projects_delete' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                                  {% endif %}
                               </small>
                             </div>
                           </div>
@@ -37,8 +41,12 @@
                             <div class="card-footer">
                               <small class="text-muted">
                                   <a href="{% url 'projects_view' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-info"></span></a>
-                                  <a href="{% url 'projects_update' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
-                                  <a href="{% url 'projects_delete' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                                  {% if perms.webapp.change_projects %}
+                                    <a href="{% url 'projects_update' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-edit"></span></a>
+                                  {% endif %}
+                                  {% if perms.webapp.delete_projects %}
+                                    <a href="{% url 'projects_delete' project.pk %}" class="btn btn-info" style="width: 40px"><span class="fa fa-trash"></span></a>
+                                  {% endif %}
                               </small>
                             </div>
                           </div>
@@ -49,5 +57,7 @@
     </div>
 {% endblock %}
 {% block scripts %}
-<a href="{% url 'projects_add' %}" class="button2" tabindex="0">+</a>
+    {% if perms.webapp.add_projects %}
+        <a href="{% url 'projects_add' %}" class="button2" tabindex="0">+</a>
+    {% endif %}
 {% endblock %}

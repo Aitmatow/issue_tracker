@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
@@ -12,10 +12,12 @@ from webapp.forms import Team, TeamDelete
 from webapp.models import  Projects
 
 
-class TeamsCreate(LoginRequiredMixin,CreateView):
+class TeamsCreate(PermissionRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
     form_class = Team
+    permission_required = 'webapp.add_teams'
+    permission_denied_message = 'Доступ запрещен!'
 
     def form_valid(self, form):
         project = Projects.objects.get(id=self.request.path.split('/')[-1])
@@ -37,10 +39,12 @@ class TeamsCreate(LoginRequiredMixin,CreateView):
         form.fields['user'].queryset = User.objects.exclude(username__in=closed_users)
         return form
 
-class TeamsDelete(LoginRequiredMixin,CreateView):
+class TeamsDelete(PermissionRequiredMixin,CreateView):
     template_name = 'teams/teams_form.html'
     model = Teams
     form_class = TeamDelete
+    permission_required = 'webapp.change_teams'
+    permission_denied_message = 'Доступ запрещен!'
 
     def get_form(self, form_class=None):
         form = super(TeamsDelete,self).get_form()

@@ -1,7 +1,7 @@
 # Create your views here.
 from datetime import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -37,11 +37,13 @@ class ProjectsDetail(DetailView):
         return context
 
 
-class ProjectsCreate(LoginRequiredMixin,CreateView):
+class ProjectsCreate(PermissionRequiredMixin,CreateView):
     template_name = 'projects/projects_form.html'
     model = Projects
     success_url = reverse_lazy('projects_list')
     form_class = UserToProject
+    permission_required = 'webapp.add_projects'
+    permission_denied_message = 'Доступ запрещен'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -66,17 +68,21 @@ class ProjectsCreate(LoginRequiredMixin,CreateView):
         return kwargs
 
 
-class ProjectsUpdate(LoginRequiredMixin,UpdateView):
+class ProjectsUpdate(PermissionRequiredMixin,UpdateView):
     template_name = 'projects/projects_update.html'
     model = Projects
     fields = ['name', 'description', 'status']
     success_url = reverse_lazy('projects_list')
+    permission_required = 'webapp.change_projects'
+    permission_denied_message = 'Доступ запрещен'
 
 
-class ProjectsDelete(LoginRequiredMixin,DeleteView):
+class ProjectsDelete(PermissionRequiredMixin,DeleteView):
     template_name = 'projects/projects_delete.html'
     model = Projects
     success_url = reverse_lazy('projects_list')
+    permission_required = 'webapp.delete_projects'
+    permission_denied_message = 'Доступ запрещен'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()

@@ -1,5 +1,5 @@
 # Create your views here.
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.http import urlencode
@@ -66,23 +66,29 @@ def edit_permission_test(project, user):
         return False
 
 
-class IssueCreate(LoginRequiredMixin, CreateView):
+class IssueCreate(PermissionRequiredMixin, CreateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     # fields = ['title', 'description', 'project', 'status', 'tip', 'created_by', 'assigned_to']
     success_url = reverse_lazy('issue_list')
     form_class = IssueForm
+    permission_required = 'webapp.add_issue'
+    permission_denied_message = 'Доступ запрещен'
 
     def get_form(self, form_class=None):
         form = super(IssueCreate,self).get_form()
         form.fields['created_by'].queryset = User.objects.filter(username=self.request.user)
         form.fields['project'].queryset = Projects.objects.filter(teams__user=self.request.user)
         cur_project = Projects.objects.filter(teams__user=self.request.user)
-        users_in_team = Teams.objects.filter(project=cur_project[0])
-        wanted_users = set()
-        for i in users_in_team:
-            wanted_users.add(i.user)
-        form.fields['assigned_to'].queryset=User.objects.filter(username__in=wanted_users)
+        print(cur_project)
+        try:
+            users_in_team = Teams.objects.filter(project=cur_project[0])
+            wanted_users = set()
+            for i in users_in_team:
+                wanted_users.add(i.user)
+            form.fields['assigned_to'].queryset = User.objects.filter(username__in=wanted_users)
+        except:
+            form.fields['assigned_to'].queryset = User.objects.all()
         return form
 
 
@@ -98,12 +104,14 @@ class IssueCreate(LoginRequiredMixin, CreateView):
 
 
 
-class IssueUpdate(UserPassesTestMixin,UpdateView):
+class IssueUpdate(UserPassesTestMixin,PermissionRequiredMixin,UpdateView):
     template_name = 'issue/issue_form.html'
     model = Issue
     # fields = ['title', 'description', 'project', 'status', 'tip']
     success_url = reverse_lazy('issue_list')
     form_class = IssueForm
+    permission_required = 'webapp.change_issue'
+    permission_denied_message = 'Доступ запрещен'
 
     def get_form(self, form_class=None):
         form = super(IssueUpdate,self).get_form()
@@ -133,11 +141,9 @@ class IssueUpdate(UserPassesTestMixin,UpdateView):
         return edit_permission_test(obj, self.request.user)
 
 
-class IssueDelete(UserPassesTestMixin,DeleteView):
+class IssueDelete(PermissionRequiredMixin,DeleteView):
     template_name = 'issue/issue_delete.html'
     model = Issue
     success_url = reverse_lazy('issue_list')
-
-    def test_func(self):
-        obj = self.get_object().project
-        return edit_permission_test(obj, self.request.user)
+    permission_required = 'webapp.delete_issue'
+    permission_denied_message = 'Доступ запрещен'
