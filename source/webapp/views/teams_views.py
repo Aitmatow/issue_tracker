@@ -1,6 +1,7 @@
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -31,21 +32,29 @@ class TeamsCreate(LoginRequiredMixin,CreateView):
     form_class = Team
 
     def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        # self.object = form.save()
         project = Projects.objects.get(id=self.request.path.split('/')[-1])
         Teams.objects.create(
             user=form.cleaned_data['user'],
             project=project,
             created_date=form.cleaned_data['created_date']
         )
+        print(form.cleaned_data['user'])
         return redirect('projects_view', project.id)
+
+    def get_form(self, form_class=None):
+        form = super(TeamsCreate,self).get_form()
+        project = Projects.objects.get(id=self.request.path.split('/')[-1])
+        teams = Teams.objects.filter(project=project)
+        closed_users = set()
+        for i in teams:
+            closed_users.add(i.user)
+        form.fields['user'].queryset = User.objects.exclude(username__in=closed_users)
+        return form
 
 
 class TeamsUpdate(LoginRequiredMixin,UpdateView):
     template_name = 'teams/teams_form.html'
     model = Teams
-    # fields = ['user', 'project', 'created_date', 'updated_date']
     success_url = reverse_lazy('teams_list')
     form_class = Team
 

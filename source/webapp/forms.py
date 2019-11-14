@@ -63,7 +63,13 @@ class UserToProject(forms.ModelForm):
 
 
 class Team(forms.ModelForm):
+    created_date = forms.DateField(label='Дата начала', widget=forms.SelectDateWidget)
+    user = forms.ModelChoiceField(queryset=User.objects.all(), label='Пользователи', required=True)
 
     class Meta:
         model = Teams
         exclude = ['project', 'updated_date']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].queryset = User.objects.all()
