@@ -40,7 +40,6 @@ class ProjectsDetail(DetailView):
 class ProjectsCreate(LoginRequiredMixin,CreateView):
     template_name = 'projects/projects_form.html'
     model = Projects
-    # fields = ['name', 'description', 'status']
     success_url = reverse_lazy('projects_list')
     form_class = UserToProject
 

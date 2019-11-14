@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.forms import widgets
 
 from accounts.models import Teams
@@ -73,3 +74,12 @@ class TeamDelete(forms.ModelForm):
     class Meta:
         model = Teams
         fields=['user']
+
+    # def clean_user(self):
+    #     user = self.cleaned_data.get('user')
+    #     user = User.objects.get(username=user)
+    #     print(self.request.user)
+    #     if self.request.user == user:
+    #         raise ValidationError('Вы не можете удалить из проекта сами себя.', code='invalid_delete')
+    #     else:
+    #         return user

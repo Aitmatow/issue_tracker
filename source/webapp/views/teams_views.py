@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView,DeleteView
@@ -44,7 +45,7 @@ class TeamsDelete(LoginRequiredMixin,CreateView):
     def get_form(self, form_class=None):
         form = super(TeamsDelete,self).get_form()
         project = Projects.objects.get(id=self.request.path.split('/')[-1])
-        teams = Teams.objects.filter(project=project)
+        teams = Teams.objects.filter(project=project).filter(updated_date__isnull=True)
         cur_users = set()
         for i in teams:
             cur_users.add(i.user)
@@ -53,5 +54,8 @@ class TeamsDelete(LoginRequiredMixin,CreateView):
 
     def form_valid(self, form):
         project = Projects.objects.get(id=self.request.path.split('/')[-1])
-        Teams.objects.filter(user=form.cleaned_data['user'], project=project).update(updated_date=datetime.now())
-        return redirect('projects_view', project.id)
+        if form.cleaned_data['user'] == self.request.user:
+            raise ValidationError('Вы не можете удалить из проекта сами себя.', code='invalid_delete')
+        else:
+            Teams.objects.filter(user=form.cleaned_data['user'], project=project).update(updated_date=datetime.now())
+            return redirect('projects_view', project.id)
