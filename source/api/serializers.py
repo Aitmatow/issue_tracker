@@ -3,6 +3,7 @@ from webapp.models import Issue, Projects
 
 
 class IssueSerializer(serializers.ModelSerializer):
+    create_date = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Issue
         fields = "__all__"
