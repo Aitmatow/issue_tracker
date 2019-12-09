@@ -17,6 +17,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from main import settings
 
@@ -28,5 +29,6 @@ urlpatterns = [
     path('projects/', include('webapp.urls.projects_urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('teams/', include('webapp.urls.teams_urls')),
-    path('api/v1/', include('api.urls'))
+    path('api/v1/', include('api.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
