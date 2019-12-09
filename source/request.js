@@ -32,7 +32,14 @@ error: function(response, status) {console.log(response);}
 });
 
 //Выбор всех задач заданного проекта
-
+$.ajax({
+method: 'get',
+url : 'http://localhost:8000/api/v1/issues/?project=1',
+headers : {'Authorization' : 'Token ' + localStorage.getItem('api_token') },
+dataType : 'json',
+success:function(response, status) {console.log(response);},
+error: function(response, status) {console.log(response);}
+});
 // Создание задачи;
 
 $.ajax({

@@ -1,8 +1,9 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+import django_filters.rest_framework
 from api.serializers import IssueSerializer, ProjectsSerializer
 from webapp.models import Issue, Projects
 from rest_framework.permissions import IsAuthenticated, AllowAny, SAFE_METHODS, DjangoModelPermissions
@@ -49,7 +50,6 @@ error: function(response, status) {console.log(response);}
 
 class CustomDjangoModelPermission(DjangoModelPermissions):
     def __init__(self):
-        self.perms_map['GET'] = ['%(app_label)s.view_%(model_name)s']
         self.perms_map['POST'] = ['%(app_label)s.view_%(model_name)s']
         self.perms_map['DELETE'] = ['%(app_label)s.view_%(model_name)s']
 
@@ -67,7 +67,8 @@ class IssueViewSet(viewsets.ModelViewSet):
     permission_classes = [CustomDjangoModelPermission]
     serializer_class = IssueSerializer
     queryset = Issue.objects.all()
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['project']
     # def get_permissions(self):
     #     if self.request.method in SAFE_METHODS:
     #         return [AllowAny()]
