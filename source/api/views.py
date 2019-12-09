@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import django_filters.rest_framework
-from api.serializers import IssueSerializer, ProjectsSerializer
+from api.serializers import IssueSerializer, ProjectsSerializer, UserSerializer
 from webapp.models import Issue, Projects
 from rest_framework.permissions import IsAuthenticated, AllowAny, SAFE_METHODS, DjangoModelPermissions
 
@@ -55,12 +55,24 @@ class CustomDjangoModelPermission(DjangoModelPermissions):
 
 class LogoutView(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request, *args, **kwargs):
         user = request.user
         if user.is_authenticated:
             user.auth_token.delete()
         return Response({'status': 'ok'})
+
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer  = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({'response': 'Пользователь зарегистрирован!',
+                             'first_name': user.first_name,
+                             'last_name': user.last_name})
+        else:
+            return Response({serializer.errors})
 
 
 class IssueViewSet(viewsets.ModelViewSet):
